@@ -1,14 +1,18 @@
 package caps.testing.domain;
 
-import caps.testing.role.MemberRole;
 import lombok.*;
+import org.apache.tomcat.util.buf.Utf8Encoder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.codec.Utf8;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
+import java.beans.Encoder;
+import java.net.PasswordAuthentication;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Collection;
 import java.util.List;
 
@@ -16,7 +20,7 @@ import java.util.List;
 @Data
 @Getter @Setter
 @NoArgsConstructor
-public class Member extends BaseTimeEntity implements UserDetails {
+public class Member implements UserDetails {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "MEMBER_ID")
@@ -31,10 +35,6 @@ public class Member extends BaseTimeEntity implements UserDetails {
     @Column(name = "MEMBER_PWD")
     private String pwd;
 
-//    @Embedded
-//    @Column(name = "MEMBER_ADDRESS")
-//    private Address address;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "MEMBER_ADMIN")
     private Administration admin;
@@ -42,9 +42,8 @@ public class Member extends BaseTimeEntity implements UserDetails {
     @Column(name = "MEMBER_PHONE_NUMBER")
     private String phone;
 
-//    @Enumerated(EnumType.STRING)
-//    @Column(name = "MEMBER_ROLE")
-//    private MemberRole memberRole;
+    @Column(name = "AUTHENTICATION_CODE")
+    private String authentication_code;
 
     private String refreshToken;
 
@@ -52,22 +51,19 @@ public class Member extends BaseTimeEntity implements UserDetails {
     @JoinColumn(name = "TEAM_ID")
     private Team team;
 
+    @Column(name = "TEAM_NAME")
+    private String team_name;
+
     @Builder
-    public Member(Long id, String name, String email, String pwd, Administration admin, String phone) {
+    public Member(Long id, String name, String email, String pwd, Administration admin, String phone, String authentication_code, String team_name) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.pwd = pwd;
         this.admin = admin;
         this.phone = phone;
-    }
-
-    public void addWorkerAuthority(){
-        this.admin = Administration.ROLE_WORKER;
-    }
-
-    public void addManagerAuthority(){
-        this.admin = Administration.ROLE_MANAGER;
+        this.authentication_code = authentication_code;
+        this.team_name = team_name;
     }
 
     @Override
@@ -79,6 +75,11 @@ public class Member extends BaseTimeEntity implements UserDetails {
 
     public void encodePassword(PasswordEncoder passwordEncoder){
         this.pwd = passwordEncoder.encode(pwd);
+    }
+
+    public void encodeAuthentication(PasswordEncoder passwordEncoder){
+        this.authentication_code = passwordEncoder.encode(authentication_code);
+
     }
 
     @Override

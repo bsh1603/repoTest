@@ -1,5 +1,6 @@
 package caps.testing.domain;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,4 +23,10 @@ public class Team {
 
     @OneToMany(mappedBy = "team")
     private List<Member> memberList = new ArrayList<>();
+
+    @Builder
+    public Team(Long id, String name){
+        this.id = id;
+        this.name = name;
+    }
 }

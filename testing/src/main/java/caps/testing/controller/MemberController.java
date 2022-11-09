@@ -1,10 +1,7 @@
 package caps.testing.controller;
 
 import caps.testing.domain.Member;
-import caps.testing.dto.MemberDTO;
-import caps.testing.dto.MemberSignInRequestDto;
-import caps.testing.dto.MemberSignUpRequestDto;
-import caps.testing.dto.TokenResponseDto;
+import caps.testing.dto.*;
 import caps.testing.form.AccountForm;
 import caps.testing.service.MemberService;
 import lombok.NoArgsConstructor;
@@ -26,9 +23,14 @@ public class MemberController {
     @Autowired
     private final MemberService memberService;
 
-    @PostMapping("/new")
-    public Long signUp(@RequestBody @Valid MemberSignUpRequestDto memberSignUpRequestDto){
-        return memberService.join(memberSignUpRequestDto);
+    @PostMapping("/member/join/worker")
+    public Long signUp_worker(@RequestBody @Valid MemberSignUpRequestDto memberSignUpRequestDto){
+        return memberService.join_worker(memberSignUpRequestDto);
+    }
+
+    @PostMapping("/member/join/manager")
+    public Long singUp_manger(@RequestBody @Valid ManagerSignUpDto managerSignUpDto){
+        return memberService.join_manager(managerSignUpDto);
     }
 
     @PostMapping("/member/login")

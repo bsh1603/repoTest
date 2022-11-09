@@ -23,15 +23,17 @@ public class MemberDTO {
 //    private Address address;
     private Administration admin;
     private String phone;
+    private String authentication_code;
 
     @Builder
-    public MemberDTO(Long id, String name, String email, String pwd, Administration admin, String phone) {
+    public MemberDTO(Long id, String name, String email, String pwd, Administration admin, String phone, String authentication_code) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.pwd = pwd;
         this.admin = admin;
         this.phone = phone;
+        this.authentication_code = authentication_code;
     }
 
     public Member toMember(){

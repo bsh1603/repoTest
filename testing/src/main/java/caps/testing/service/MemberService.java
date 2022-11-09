@@ -1,15 +1,15 @@
 package caps.testing.service;
 
 import caps.testing.domain.Member;
-import caps.testing.dto.MemberDTO;
-import caps.testing.dto.MemberSignInRequestDto;
-import caps.testing.dto.MemberSignUpRequestDto;
-import caps.testing.dto.TokenResponseDto;
+import caps.testing.domain.Team;
+import caps.testing.dto.*;
 import caps.testing.exception.MemberException;
 import caps.testing.exception.MemberExceptionType;
 import caps.testing.form.AccountForm;
 import caps.testing.jwt.JwtTokenProvider;
+import caps.testing.repository.ManageRepository;
 import caps.testing.repository.MemberRepository;
+import caps.testing.repository.TeamRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,14 +27,38 @@ import java.util.Optional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final ManageRepository manageRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
+    private final TeamRepository teamRepository;
+    private final TeamService teamService;
 
     @Transactional
-    public Long join(MemberSignUpRequestDto memberSignUpRequestDto){
+    public Long join_worker(MemberSignUpRequestDto memberSignUpRequestDto){
         validateDuplicateMember(memberSignUpRequestDto);
+
+        String authentication_code = memberSignUpRequestDto.getAuthentication_code();
+        Member manager = manageRepository.findByCode(authentication_code);
+
         Member member = memberRepository.save(memberSignUpRequestDto.toMember());
+        member.setTeam(manager.getTeam());
         member.encodePassword(passwordEncoder);
+
+        return member.getId();
+    }
+
+    @Transactional
+    public Long join_manager(ManagerSignUpDto managerSignUpDto){
+        validateDuplicateManager(managerSignUpDto);
+
+        String team_name = managerSignUpDto.getTeam_name();
+        Team setTeam = Team.builder().name(team_name).build();
+        Team registered = teamService.register(setTeam);
+
+        Member member = memberRepository.save(managerSignUpDto.toManager());
+        member.setTeam(registered);
+        member.encodePassword(passwordEncoder);
+        member.encodeAuthentication(passwordEncoder);
         return member.getId();
     }
 
@@ -60,6 +84,13 @@ public class MemberService {
 
     public void validateDuplicateMember(MemberSignUpRequestDto memberSignUpRequestDto){
         Optional<Member> findMembers = memberRepository.findByEmail(memberSignUpRequestDto.getEmail());
+        if(!findMembers.isEmpty()){
+            throw new IllegalStateException("이미 가입한 회원입니다.");
+        }
+    }
+
+    public void validateDuplicateManager(ManagerSignUpDto managerSignUpDto){
+        Optional<Member> findMembers = memberRepository.findByEmail(managerSignUpDto.getEmail());
         if(!findMembers.isEmpty()){
             throw new IllegalStateException("이미 가입한 회원입니다.");
         }
