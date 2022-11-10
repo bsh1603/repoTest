@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,5 +22,8 @@ public interface MemberRepository extends JpaRepository<Member, Long>{
 
     @Query(value = "select * from member m where m.authentication_code = ?1", nativeQuery = true)
     List<Member> findAllByCodeLike(String authentication_code);
+
+    @Query(value = "select m.authentication_code from member m")
+    HashSet<String> findAllCode();
 
 }

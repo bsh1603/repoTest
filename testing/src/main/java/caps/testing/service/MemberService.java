@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,14 +34,22 @@ public class MemberService {
     private final TeamService teamService;
 
     @Transactional
-    public Long join_worker(MemberSignUpRequestDto memberSignUpRequestDto){
+    public Long join_worker(MemberSignUpRequestDto memberSignUpRequestDto) throws MemberException {
         validateDuplicateMember(memberSignUpRequestDto);
         String authentication_code = memberSignUpRequestDto.getAuthentication_code();
 
-        List<Member> members = memberRepository.findAllByCodeLike(authentication_code);
-        log.info("제발" + members.get(0).getName());
-        Member manager = members.get(0);
+        HashSet<String> allCode = memberRepository.findAllCode();
 
+        log.info("코드 찾기" + allCode);
+
+        if(!allCode.contains(authentication_code)){
+            log.info("찾지 못함");
+            throw new IllegalStateException("코드를 다시 확인해주세요");
+        }
+
+        memberRepository.findAllByCodeLike(authentication_code);
+
+        Member manager = memberRepository.findAllByCodeLike(authentication_code).get(0);
         Member member = memberRepository.save(memberSignUpRequestDto.toMember());
         member.setTeam(manager.getTeam());
         member.setTeam_name(manager.getTeam_name());
@@ -105,5 +115,12 @@ public class MemberService {
         if(!passwordEncoder.matches(validPassword, memberPassword)){
             throw new MemberException(MemberExceptionType.WRONG_PASSWORD);
         }
+    }
+
+    private boolean matchedAuthentication(String validCode, String memberCode){
+        if(validCode.equals(memberCode)){
+            return true;
+        }
+        return false;
     }
 }
