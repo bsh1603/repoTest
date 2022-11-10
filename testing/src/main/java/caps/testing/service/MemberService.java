@@ -5,18 +5,17 @@ import caps.testing.domain.Team;
 import caps.testing.dto.*;
 import caps.testing.exception.MemberException;
 import caps.testing.exception.MemberExceptionType;
-import caps.testing.form.AccountForm;
 import caps.testing.jwt.JwtTokenProvider;
-import caps.testing.repository.ManageRepository;
 import caps.testing.repository.MemberRepository;
 import caps.testing.repository.TeamRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.Valid;
+import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,22 +25,24 @@ import java.util.Optional;
 @Slf4j
 public class MemberService {
 
+    @Autowired
     private final MemberRepository memberRepository;
-    private final ManageRepository manageRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
-    private final TeamRepository teamRepository;
     private final TeamService teamService;
 
     @Transactional
     public Long join_worker(MemberSignUpRequestDto memberSignUpRequestDto){
         validateDuplicateMember(memberSignUpRequestDto);
-
         String authentication_code = memberSignUpRequestDto.getAuthentication_code();
-        Member manager = manageRepository.findByCode(authentication_code);
+
+        List<Member> members = memberRepository.findAllByCodeLike(authentication_code);
+        log.info("제발" + members.get(0).getName());
+        Member manager = members.get(0);
 
         Member member = memberRepository.save(memberSignUpRequestDto.toMember());
         member.setTeam(manager.getTeam());
+        member.setTeam_name(manager.getTeam_name());
         member.encodePassword(passwordEncoder);
 
         return member.getId();
@@ -89,9 +90,9 @@ public class MemberService {
         }
     }
 
-    public void validateDuplicateManager(ManagerSignUpDto managerSignUpDto){
+    public void validateDuplicateManager(ManagerSignUpDto managerSignUpDto) {
         Optional<Member> findMembers = memberRepository.findByEmail(managerSignUpDto.getEmail());
-        if(!findMembers.isEmpty()){
+        if (!findMembers.isEmpty()) {
             throw new IllegalStateException("이미 가입한 회원입니다.");
         }
     }

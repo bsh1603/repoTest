@@ -20,7 +20,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MemberController {
 
-    @Autowired
     private final MemberService memberService;
 
     @PostMapping("/member/join/worker")
