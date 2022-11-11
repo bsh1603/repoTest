@@ -40,8 +40,6 @@ public class MemberService {
 
         HashSet<String> allCode = memberRepository.findAllCode();
 
-        log.info("코드 찾기" + allCode);
-
         if(!allCode.contains(authentication_code)){
             log.info("찾지 못함");
             throw new IllegalStateException("코드를 다시 확인해주세요");
@@ -91,6 +89,14 @@ public class MemberService {
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
+    }
+
+    public Long findMyId(Member member){
+        return member.getId();
+    }
+
+    public List<Member> findAllMyTeam(Long id){
+        return memberRepository.findAllMyTeam(id);
     }
 
     public void validateDuplicateMember(MemberSignUpRequestDto memberSignUpRequestDto){

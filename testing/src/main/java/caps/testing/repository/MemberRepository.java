@@ -26,4 +26,7 @@ public interface MemberRepository extends JpaRepository<Member, Long>{
     @Query(value = "select m.authentication_code from member m")
     HashSet<String> findAllCode();
 
+    @Query(value = "select * from member m where m.team_id = ?1", nativeQuery = true)
+    List<Member> findAllMyTeam(Long team_id);
+
 }
