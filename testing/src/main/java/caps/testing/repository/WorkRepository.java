@@ -27,4 +27,8 @@ public interface WorkRepository extends JpaRepository<Work, Long> {
     @Modifying
     @Query(value = "UPDATE work w set w.work_end_time = :localDateTime where w.work_id = :id", nativeQuery = true)
     void updateEndTime(@Param("localDateTime") LocalDateTime localDateTime, @Param("id") Long id);
+
+    @Modifying
+    @Query(value = "UPDATE work w set w.work_time = timediff(w.work_end_time, w.work_start_time)", nativeQuery = true)
+    void today_work_time();
 }

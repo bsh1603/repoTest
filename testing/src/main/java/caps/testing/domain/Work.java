@@ -22,7 +22,8 @@ public class Work {
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
-    @DateTimeFormat(pattern = "yyyy-MM-DD-HH-mm")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd-HH-mm", timezone = "Asia/Seoul")
+//    @DateTimeFormat(pattern = "yyyy-MM-DD-HH-mm")
     @Column(name = "WORK_START_TIME", updatable = false)
     private LocalDateTime work_start_time;
 
@@ -30,11 +31,16 @@ public class Work {
     @Column(name = "WORK_END_TIME", updatable = false)
     private LocalDateTime work_end_time;
 
+    @DateTimeFormat(pattern = "yyyy-MM-DD-HH-mm")
+    @Column(name = "WORK_TIME", updatable = false)
+    private LocalDateTime work_time;
+
     @Builder
-    public Work(Long id, Member member, LocalDateTime work_start_time, LocalDateTime work_end_time) {
+    public Work(Long id, Member member, LocalDateTime work_start_time, LocalDateTime work_end_time, LocalDateTime work_time) {
         this.id = id;
         this.member = member;
         this.work_start_time = work_start_time;
         this.work_end_time = work_end_time;
+        this.work_time = work_time;
     }
 }

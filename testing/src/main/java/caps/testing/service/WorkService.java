@@ -38,4 +38,9 @@ public class WorkService {
         workRepository.updateEndTime(workEndDto.getWork_end_time(), nullId);
     }
 
+    @Transactional
+    public void calculate_work_time(){
+        workRepository.today_work_time();
+    }
+
 }
