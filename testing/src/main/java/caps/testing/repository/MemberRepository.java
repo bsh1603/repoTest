@@ -1,16 +1,10 @@
 package caps.testing.repository;
 
 import caps.testing.domain.Member;
-import caps.testing.dto.MemberDTO;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -28,5 +22,8 @@ public interface MemberRepository extends JpaRepository<Member, Long>{
 
     @Query(value = "select * from member m where m.team_id = ?1", nativeQuery = true)
     List<Member> findAllMyTeam(Long team_id);
+
+    @Query(value = "select m.team_id from member m where m.member_id = ?1", nativeQuery = true)
+    Long findMyTeamId(Long member_id);
 
 }

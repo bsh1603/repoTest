@@ -1,4 +1,4 @@
-package caps.testing.dto;
+package caps.testing.dto.member;
 
 import caps.testing.domain.Address;
 import caps.testing.domain.Administration;

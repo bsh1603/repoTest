@@ -1,16 +1,17 @@
-package caps.testing.dto;
+package caps.testing.dto.member;
 
 import caps.testing.domain.Administration;
 import caps.testing.domain.Member;
-import caps.testing.domain.Team;
-import lombok.*;
-import lombok.extern.slf4j.Slf4j;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ManagerSignUpDto {
+public class MemberSignUpRequestDto {
 
     private String email;
     private String name;
@@ -18,17 +19,15 @@ public class ManagerSignUpDto {
     private Administration admin;
     private String phone;
     private String authentication_code;
-    private String team_name;
 
-    public Member toManager(){
+    public Member toMember(){
         return Member.builder()
                 .email(email)
                 .name(name)
                 .pwd(pwd)
-                .admin(Administration.ROLE_MANAGER)
+                .admin(Administration.ROLE_WORKER)
                 .phone(phone)
                 .authentication_code(authentication_code)
-                .team_name(team_name)
                 .build();
     }
 }

@@ -36,7 +36,7 @@ public class WorkTest {
     public void 시작시간넣기() throws Exception{
         //given
         WorkStartDto workStartDto = new WorkStartDto();
-        workStartDto.setWork_start_time(LocalDateTime.now()); // 받았다
+//        workStartDto.setWork_start_time(LocalDateTime.now()); // 받았다
 
         Long id = workService.save_startTime(workStartDto);
         System.out.println(id);
@@ -60,7 +60,7 @@ public class WorkTest {
         //given
         Long null_id = workService.find_null_id();
         WorkEndDto workEndDto = new WorkEndDto();
-        workEndDto.setWork_end_time(LocalDateTime.now());
+//        workEndDto.setWork_end_time(LocalDateTime.now());
         //when
 
         System.out.println("*********");

@@ -1,19 +1,15 @@
 package caps.testing.controller;
 
-import caps.testing.domain.Administration;
 import caps.testing.domain.Member;
-import caps.testing.domain.User;
-import caps.testing.dto.*;
-import caps.testing.form.AccountForm;
+import caps.testing.dto.member.ManagerSignUpDto;
+import caps.testing.dto.member.MemberSignInRequestDto;
+import caps.testing.dto.member.MemberSignUpRequestDto;
+import caps.testing.dto.token.TokenResponseDto;
 import caps.testing.repository.MemberRepository;
 import caps.testing.service.MemberService;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.Banner;
-import org.springframework.stereotype.Controller;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -52,8 +48,13 @@ public class MemberController {
     @GetMapping("/members")
     public List<Member> list(Model model){
         List<Member> members = memberService.findMembers();
-        model.addAttribute("members", members);
         return members;
     }
 
+    @GetMapping("/api/member/{member_id}")
+    public List<Member> getMemberByTeam(@PathVariable("member_id") Long member_id){
+        Long myTeamId = memberService.findMyTeamId(member_id);
+        List<Member> members = memberService.findAllMyTeam(myTeamId);
+        return members;
+    }
 }

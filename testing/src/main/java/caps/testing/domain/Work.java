@@ -6,6 +6,8 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Entity(name = "work")
@@ -25,18 +27,18 @@ public class Work {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd-HH-mm", timezone = "Asia/Seoul")
 //    @DateTimeFormat(pattern = "yyyy-MM-DD-HH-mm")
     @Column(name = "WORK_START_TIME", updatable = false)
-    private LocalDateTime work_start_time;
+    private Timestamp work_start_time;
 
     @DateTimeFormat(pattern = "yyyy-MM-DD-HH-mm")
     @Column(name = "WORK_END_TIME", updatable = false)
-    private LocalDateTime work_end_time;
+    private Timestamp work_end_time;
 
     @DateTimeFormat(pattern = "yyyy-MM-DD-HH-mm")
     @Column(name = "WORK_TIME", updatable = false)
-    private LocalDateTime work_time;
+    private Timestamp work_time;
 
     @Builder
-    public Work(Long id, Member member, LocalDateTime work_start_time, LocalDateTime work_end_time, LocalDateTime work_time) {
+    public Work(Long id, Member member, Timestamp work_start_time, Timestamp work_end_time, Timestamp work_time) {
         this.id = id;
         this.member = member;
         this.work_start_time = work_start_time;

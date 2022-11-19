@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -16,17 +17,17 @@ public interface WorkRepository extends JpaRepository<Work, Long> {
     Optional<Work> findById(Long id);
 
     @Query(value = "select w.work_start_time from work w where w.id = ?1", nativeQuery = true)
-    LocalDateTime findStartTime(Long id);
+    Timestamp findStartTime(Long id);
 
     @Query(value = "select w.work_end_time from work w where w.id =?1", nativeQuery = true)
-    LocalDateTime findEndTime(Long id);
+    Timestamp findEndTime(Long id);
 
     @Query(value = "select w.work_id from work w where w.work_end_time is null", nativeQuery = true)
     Long findNullId();
 
     @Modifying
     @Query(value = "UPDATE work w set w.work_end_time = :localDateTime where w.work_id = :id", nativeQuery = true)
-    void updateEndTime(@Param("localDateTime") LocalDateTime localDateTime, @Param("id") Long id);
+    void updateEndTime(@Param("localDateTime") Timestamp localDateTime, @Param("id") Long id);
 
     @Modifying
     @Query(value = "UPDATE work w set w.work_time = timediff(w.work_end_time, w.work_start_time)", nativeQuery = true)

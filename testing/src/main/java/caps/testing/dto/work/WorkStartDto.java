@@ -3,6 +3,7 @@ package caps.testing.dto.work;
 import caps.testing.domain.Work;
 import lombok.*;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Getter @Setter
@@ -11,7 +12,7 @@ import java.time.LocalDateTime;
 @Builder
 public class WorkStartDto {
 
-    private LocalDateTime work_start_time;
+    private Timestamp work_start_time;
 
     public Work toStartWork(){
         return Work.builder()

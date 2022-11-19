@@ -1,16 +1,13 @@
 package caps.testing;
 
-import caps.testing.domain.Address;
 import caps.testing.domain.Administration;
 import caps.testing.domain.Member;
 import caps.testing.domain.Team;
-import caps.testing.dto.MemberDTO;
+import caps.testing.dto.member.MemberDTO;
 import caps.testing.repository.MemberRepository;
 import caps.testing.repository.TeamRepository;
-import caps.testing.role.MemberRole;
 import caps.testing.service.MemberService;
 import caps.testing.service.TeamService;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,8 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional
 @SpringBootTest
@@ -165,6 +160,17 @@ class TestingApplicationTests {
         for(Member m : all){
             System.out.println(m.getName());
         }
+        //then
+    }
+
+    @Test
+    public void 내팀아이디찾기() throws Exception{
+        //given
+        Long id = 2L;
+        Long myTeamId = memberService.findMyTeamId(id);
+        //when
+
+        System.out.println(myTeamId);
         //then
     }
 

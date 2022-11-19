@@ -1,6 +1,9 @@
 package caps.testing.domain;
 
+import caps.testing.domain.chat.Room;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
+import net.minidev.json.annotate.JsonIgnore;
 import org.apache.tomcat.util.buf.Utf8Encoder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -49,10 +52,17 @@ public class Member implements UserDetails {
 
     @ManyToOne
     @JoinColumn(name = "TEAM_ID")
+    @JsonBackReference
     private Team team;
 
+    @JsonIgnore
     @Column(name = "TEAM_NAME")
     private String team_name;
+
+    @ManyToOne
+    @JoinColumn(name = "ROOM_ID")
+    @JsonBackReference
+    private Room room;
 
     @Builder
     public Member(Long id, String name, String email, String pwd, Administration admin, String phone, String authentication_code, String team_name) {

@@ -4,6 +4,7 @@ import caps.testing.domain.Work;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Getter @Setter
@@ -12,7 +13,7 @@ import java.time.LocalDateTime;
 @Builder
 public class WorkEndDto {
 
-    private LocalDateTime work_end_time;
+    private Timestamp work_end_time;
 
     @Builder
     public Work toEndWork(){

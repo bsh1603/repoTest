@@ -1,9 +1,11 @@
 package caps.testing.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -22,6 +24,7 @@ public class Team {
     private String name;
 
     @OneToMany(mappedBy = "team")
+    @JsonManagedReference
     private List<Member> memberList = new ArrayList<>();
 
     @Builder

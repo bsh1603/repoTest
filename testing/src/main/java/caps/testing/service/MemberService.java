@@ -2,12 +2,14 @@ package caps.testing.service;
 
 import caps.testing.domain.Member;
 import caps.testing.domain.Team;
-import caps.testing.dto.*;
+import caps.testing.dto.member.ManagerSignUpDto;
+import caps.testing.dto.member.MemberSignInRequestDto;
+import caps.testing.dto.member.MemberSignUpRequestDto;
+import caps.testing.dto.token.TokenResponseDto;
 import caps.testing.exception.MemberException;
 import caps.testing.exception.MemberExceptionType;
 import caps.testing.jwt.JwtTokenProvider;
 import caps.testing.repository.MemberRepository;
-import caps.testing.repository.TeamRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +17,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -97,6 +97,10 @@ public class MemberService {
 
     public List<Member> findAllMyTeam(Long id){
         return memberRepository.findAllMyTeam(id);
+    }
+
+    public Long findMyTeamId(Long id){
+        return memberRepository.findMyTeamId(id);
     }
 
     public void validateDuplicateMember(MemberSignUpRequestDto memberSignUpRequestDto){

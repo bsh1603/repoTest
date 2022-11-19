@@ -1,4 +1,4 @@
-package caps.testing.dto;
+package caps.testing.dto.member;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
