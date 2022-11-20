@@ -59,13 +59,16 @@ public class Member implements UserDetails {
     @Column(name = "TEAM_NAME")
     private String team_name;
 
-    @ManyToOne
-    @JoinColumn(name = "ROOM_ID")
-    @JsonBackReference
-    private Room room;
+    @Column(name = "TEAM_ADDRESS")
+    private String team_address;
+
+//    @ManyToOne
+//    @JoinColumn(name = "ROOM_ID")
+//    @JsonBackReference
+//    private Room room;
 
     @Builder
-    public Member(Long id, String name, String email, String pwd, Administration admin, String phone, String authentication_code, String team_name) {
+    public Member(Long id, String name, String email, String pwd, Administration admin, String phone, String authentication_code, String team_name, String team_address) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -74,6 +77,7 @@ public class Member implements UserDetails {
         this.phone = phone;
         this.authentication_code = authentication_code;
         this.team_name = team_name;
+        this.team_address = team_address;
     }
 
     @Override

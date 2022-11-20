@@ -19,6 +19,7 @@ public class ManagerSignUpDto {
     private String phone;
     private String authentication_code;
     private String team_name;
+    private String team_address;
 
     public Member toManager(){
         return Member.builder()
@@ -29,6 +30,7 @@ public class ManagerSignUpDto {
                 .phone(phone)
                 .authentication_code(authentication_code)
                 .team_name(team_name)
+                .team_address(team_address)
                 .build();
     }
 }

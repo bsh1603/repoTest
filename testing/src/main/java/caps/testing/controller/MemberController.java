@@ -13,7 +13,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -41,8 +43,12 @@ public class MemberController {
     }
 
     @PostMapping("/api/login")
-    public TokenResponseDto login(@RequestBody @Valid MemberSignInRequestDto requestDto) {
-        return memberService.login(requestDto);
+    public Map<String, Member> login(@RequestBody @Valid MemberSignInRequestDto requestDto) {
+        String token = memberService.login(requestDto);
+        Member member = memberService.login2(requestDto);
+        Map<String, Member> map = new HashMap<>();
+        map.put(token, member);
+        return map;
     }
 
     @GetMapping("/members")
@@ -57,4 +63,5 @@ public class MemberController {
         List<Member> members = memberService.findAllMyTeam(myTeamId);
         return members;
     }
+
 }
