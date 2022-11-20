@@ -38,7 +38,7 @@ public class MemberController {
     }
 
     @PostMapping("/api/signup/manager")
-    public Long singUp_manger(@RequestBody @Valid ManagerSignUpDto managerSignUpDto){
+    public Long singUp_manger(@RequestBody @Valid ManagerSignUpDto managerSignUpDto) throws Exception {
         return memberService.join_manager(managerSignUpDto);
     }
 

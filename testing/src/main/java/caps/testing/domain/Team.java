@@ -25,13 +25,25 @@ public class Team {
     @Column(name = "TEAM_NAME")
     private String name;
 
+    @Column(name = "TEAM_ADDRESS")
+    private String address;
+
+    @Column(name = "TEAM_LATITUDE")
+    private double latitude;
+
+    @Column(name = "TEAM_LONGITUDE")
+    private double longitude;
+
     @OneToMany(mappedBy = "team")
     @JsonManagedReference
     private List<Member> memberList = new ArrayList<>();
 
     @Builder
-    public Team(Long id, String name){
+    public Team(Long id, String name, String address, double latitude, double longitude){
         this.id = id;
         this.name = name;
+        this.address = address;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 }

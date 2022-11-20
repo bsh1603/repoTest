@@ -59,6 +59,7 @@ public class Member implements UserDetails {
     @Column(name = "TEAM_NAME")
     private String team_name;
 
+    @JsonIgnore
     @Column(name = "TEAM_ADDRESS")
     private String team_address;
 

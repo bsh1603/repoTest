@@ -67,12 +67,21 @@ public class MemberService {
     }
 
     @Transactional
-    public Long join_manager(ManagerSignUpDto managerSignUpDto){
+    public Long join_manager(ManagerSignUpDto managerSignUpDto) throws Exception {
         validateDuplicateManager(managerSignUpDto);
 
         String team_name = managerSignUpDto.getTeam_name();
+
         String team_address = managerSignUpDto.getTeam_address();
-        Team setTeam = Team.builder().name(team_name).build();
+        String url = makeUrl(team_address);
+        List<Double> location = fetchData(url);
+
+        Team setTeam = Team.builder()
+                .name(team_name)
+                .address(team_address)
+                .latitude(location.get(0))
+                .longitude(location.get(1))
+                .build();
         Team registered = teamService.register(setTeam);
 
         Member member = memberRepository.save(managerSignUpDto.toManager());
@@ -211,10 +220,5 @@ public class MemberService {
             List<Double> location = List.of(latitude, longitude);
             return location;
         }
-    }
-
-    public static void main(String[] args) throws Exception {
-        String s = makeUrl("올림픽로 435");
-        List<Double> location = fetchData(s);
     }
 }
