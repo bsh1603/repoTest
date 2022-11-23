@@ -2,60 +2,63 @@ import React, { Component } from "react";
 import { Navigate } from "react-router-dom";
 import AuthService from "../services/auth.service";
 
+import { Link, Routes, Route, } from "react-router-dom";
+import EditProfile from "./edit-profile.component";
+
 export default class Profile extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      redirect: null,
+      currentUser: undefined,
+
       userReady: false,
-      currentUser: { username: "" }
+      
     };
   }
 
   componentDidMount() {
-    const currentUser = AuthService.getCurrentUser();
+    const currentUser = JSON.parse(localStorage.getItem("user")).name
 
-    if (!currentUser) this.setState({ redirect: "/home" });
+    if (!currentUser) this.setState({ redirect: "/login" });
     this.setState({ currentUser: currentUser, userReady: true })
   }
 
   render() {
-    if (this.state.redirect) {
-      return <Navigate to={this.state.redirect} />
-    }
+  
 
     const { currentUser } = this.state;
 
     return (
       <div className="container">
-        {(this.state.userReady) ?
+        
         <div>
         <header className="jumbotron">
           <h3>
-            <strong>{currentUser.username}</strong> Profile
+          <strong>{localStorage.getItem('email')}</strong> Profile
           </h3>
         </header>
-        <p>
-          <strong>Token:</strong>{" "}
-          {currentUser.accessToken.substring(0, 20)} ...{" "}
-          {currentUser.accessToken.substr(currentUser.accessToken.length - 20)}
-        </p>
-        <p>
-          <strong>Id:</strong>{" "}
-          {currentUser.id}
-        </p>
-        <p>
-          <strong>Email:</strong>{" "}
-          {currentUser.email}
-        </p>
-        <strong>Authorities:</strong>
+        
+          <strong>user id: </strong>{JSON.parse(localStorage.getItem("user")).id} <br/>
+
+          <strong>name: </strong>{JSON.parse(localStorage.getItem("user")).name} <br/>
+
+        
+        <strong>Authorities:</strong> {JSON.parse(localStorage.getItem("user")).admin}
         <ul>
-          {currentUser.roles &&
-            currentUser.roles.map((role, index) => <li key={index}>{role}</li>)}
+          
+          
         </ul>
-      </div>: null}
       </div>
-    );
+
+      <Link to="editprofile" className="nav-item"  >
+                프로필 수정
+      </Link>
+
+      
+
+
+      </div>
+    )
   }
 }

@@ -2,6 +2,7 @@ package caps.testing.domain;
 
 import caps.testing.domain.chat.Room;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import net.minidev.json.annotate.JsonIgnore;
 import org.apache.tomcat.util.buf.Utf8Encoder;
@@ -67,6 +68,10 @@ public class Member implements UserDetails {
 //    @JoinColumn(name = "ROOM_ID")
 //    @JsonBackReference
 //    private Room room;
+
+    @OneToMany(mappedBy = "member")
+    @JsonManagedReference
+    private List<Work> works = new ArrayList<>();
 
     @Builder
     public Member(Long id, String name, String email, String pwd, Administration admin, String phone, String authentication_code, String team_name, String team_address) {

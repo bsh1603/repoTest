@@ -4,6 +4,9 @@ import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 import { isEmail } from "validator";
 import axios from "axios";
+import { Routes, Route, Link } from "react-router-dom";
+import { withRouter } from "../common/with-router";
+import { useNavigate } from 'react-router-dom';
 import AuthService from "../services/auth.service";
 
 const required = (value) => {
@@ -26,15 +29,8 @@ const email = (value) => {
   }
 };
 
-// const vname = (value) => {
-//   if (value.length < 3 || value.length > 20) {
-//     return (
-//       <div className="alert alert-danger" role="alert">
-//         The username must be between 3 and 20 characters.
-//       </div>
-//     );
-//   }
-// };
+
+
 
 const vpassword = (value) => {
   if (value.length < 6 || value.length > 40) {
@@ -46,7 +42,7 @@ const vpassword = (value) => {
   }
 };
 
-export default class Register extends Component {
+class Register extends Component {
   constructor(props) {
     super(props);
     this.handleRegister = this.handleRegister.bind(this);
@@ -55,8 +51,8 @@ export default class Register extends Component {
     this.onChangeName = this.onChangeName.bind(this);
     this.onChangePhoneNumber = this.onChangePhoneNumber.bind(this);
     this.onChangeTeamName = this.onChangeTeamName.bind(this);
-    this.onChangeAuthenticationCode =
-      this.onChangeAuthenticationCode.bind(this);
+    
+    this.onChangeAuthenticationCode =  this.onChangeAuthenticationCode.bind(this);
 
     this.state = {
       email: "",
@@ -114,52 +110,23 @@ export default class Register extends Component {
     //   successful: false,
     // });
 
-    this.form.validateAll(); // 예외처리 로직 알아서 하고
-
+    this.form.validateAll(); // 예외처리 로직 ?
+    
     axios
       .post("/api/signup/manager", this.state)
       .then((res) => {
               console.log(res);
               console.log("데이터 전송 성공");
+              alert("회원가입 성공");
+              localStorage.setItem("user", JSON.stringify(res.data));
+              this.props.router.navigate("/login");
             })
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        console.error(err)
+        //alert("회원가입 실패");
+      });
 
-    // console.log({
-    //   this.state.email,
-    //   this.state.name,
-    //   this.state.pwd,
-    //   this.state.phone,
-    //   this.state.authentication_code,
-    //   this.state.team_name
-    // })
-
-    // if (this.checkBtn.context._errors.length === 0) {
-    //   AuthService.register(
-    //     this.state.username,
-    //     this.state.email,
-    //     this.state.password
-    //   ).then(
-    //     (response) => {
-    //       this.setState({
-    //         message: response.data.message,
-    //         successful: true,
-    //       });
-    //     },
-    //     (error) => {
-    //       const resMessage =
-    //         (error.response &&
-    //           error.response.data &&
-    //           error.response.data.message) ||
-    //         error.message ||
-    //         error.toString();
-
-    //       this.setState({
-    //         successful: false,
-    //         message: resMessage,
-    //       });
-    //     }
-    //   );
-    // }
+    
   }
 
   render() {
@@ -226,16 +193,7 @@ export default class Register extends Component {
                   />
                 </div>
 
-                <div className="form-group">
-                  <label> 지점 </label>
-                  <Input
-                    type="text"
-                    className="form-control"
-                    name="team_name"
-                    value={this.state.team_name}
-                    onChange={this.onChangeTeamName}
-                  />
-                </div>
+                                
 
                 <div className="form-group">
                   <label> 인증코드 </label>
@@ -249,7 +207,18 @@ export default class Register extends Component {
                 </div>
 
                 <div className="form-group">
-                  <button className="btn btn-primary btn-block">Sign Up</button>
+                  <label> 지점 </label>
+                  <Input
+                    type="text"
+                    className="form-control"
+                    name="team_name"
+                    value={this.state.team_name}
+                    onChange={this.onChangeTeamName}
+                  />
+                </div>
+                <div className="form-group">
+                  <button className="btn btn-primary btn-block">
+                    매니저 회원가입</button>
                 </div>
               </div>
             )}
@@ -281,9 +250,5 @@ export default class Register extends Component {
     );
   }
 }
-// "email":"manager5@naver.com",
-//     "name":"manager5",
-//     "pwd":"1234",
-//     "phone":"010-0000-3333",
-//     "authentication_code":"알아맞춰보세요",
-//     "team_name":"바나프레소"
+
+export default Register;

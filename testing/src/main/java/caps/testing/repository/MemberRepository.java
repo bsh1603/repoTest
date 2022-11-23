@@ -28,9 +28,7 @@ public interface MemberRepository extends JpaRepository<Member, Long>{
     @Query(value = "select m.team_id from member m where m.member_id = ?1", nativeQuery = true)
     Long findMyTeamId(Long member_id);
 
-
     @Modifying
     @Query(value = "UPDATE member m set m.member_name = :name, m.member_email = :email where m.member_id = :id", nativeQuery = true)
     void updateMember(@Param("name") String name, @Param("email") String email, @Param("id") Long id);
-
 }

@@ -6,6 +6,8 @@ import CheckButton from "react-validation/build/button";
 import AuthService from "../services/auth.service";
 import axios from "axios";
 import { withRouter } from "../common/with-router";
+import { Link, Routes, Route, } from "react-router-dom";
+import "../App.css";
 
 const required = (value) => {
   if (!value) {
@@ -17,6 +19,8 @@ const required = (value) => {
   }
 };
 
+//export const isLogin = () => !!localStorage.getItem('user');
+
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -27,10 +31,12 @@ class Login extends Component {
     this.state = {
       email: "",
       pwd: "",
+      
       // loading: false,
-      // message: "",
+      
     };
   }
+
 
   onChangeEmail(e) {
     this.setState({
@@ -52,39 +58,39 @@ class Login extends Component {
     //   message: "",
     //   loading: true,
     // });
-
+    //AuthService.login(this.state.email, this.state.pwd)
     this.form.validateAll();
+    
     axios
       .post("/api/login", this.state)
       .then((res) => {
-        console.log(res.data);
-      })
-      .catch((err) => console.error(err));
-    // if (this.checkBtn.context._errors.length === 0) {
-    //   AuthService.login(this.state.username, this.state.password).then(
-    //     () => {
-    //       this.props.router.navigate("/profile");
-    //       window.location.reload();
-    //     },
-    //     (error) => {
-    //       const resMessage =
-    //         (error.response &&
-    //           error.response.data &&
-    //           error.response.data.message) ||
-    //         error.message ||
-    //         error.toString();
+        
+        this.props.router.navigate("/home");
+        localStorage.setItem('email', this.state.email);                
+        localStorage.setItem("user", JSON.stringify(res.data));
 
-    //       this.setState({
-    //         loading: false,
-    //         message: resMessage,
-    //       });
-    //     }
-    //   );
-    // } else {
-    //   this.setState({
-    //     loading: false,
-    //   });
-    // }
+        
+        const json = localStorage.getItem("user");
+        console.log(JSON.parse(json));
+
+        const member_id = JSON.parse(localStorage.getItem("user")).id
+  
+        const id = JSON.stringify(member_id);
+  
+  axios.get(`/api/member/${id}`)
+  
+  .then(function(response) {
+    console.log(typeof response.data);
+    console.log(response.data)
+    localStorage.setItem("team_member", JSON.stringify(response.data));
+    
+  })
+      })
+      .catch((err) => {console.error(err)
+        alert("로그인실패");
+      });
+      
+    
   }
 
   render() {
@@ -139,6 +145,18 @@ class Login extends Component {
               </button>
             </div>
 
+            <div className="nav">           
+                                              
+                <Link to={"/signup/manager"} >
+                매니저 회원가입  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </Link>
+                              
+                
+            <Link to={"/signup/worker"} className="nav-item ">
+                알바생 회원가입
+            </Link>
+            
+            </div>
             {this.state.message && (
               <div className="form-group">
                 <div className="alert alert-danger" role="alert">

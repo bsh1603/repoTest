@@ -26,7 +26,7 @@ public interface WorkRepository extends JpaRepository<Work, Long> {
     Long findNullId();
 
     @Modifying
-    @Query(value = "UPDATE work w set w.work_end_time = :localDateTime where w.work_id = :id", nativeQuery = true)
+    @Query(value = "UPDATE work w set w.work_end_time = :localDateTime where w.member_id = :id and w.work_end_time is null", nativeQuery = true)
     void updateEndTime(@Param("localDateTime") Timestamp localDateTime, @Param("id") Long id);
 
     @Modifying
