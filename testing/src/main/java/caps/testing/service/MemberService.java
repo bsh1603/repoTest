@@ -55,12 +55,11 @@ public class MemberService {
             throw new IllegalStateException("코드를 다시 확인해주세요");
         }
 
-        memberRepository.findAllByCodeLike(authentication_code);
-
         Member manager = memberRepository.findAllByCodeLike(authentication_code).get(0);
         Member member = memberRepository.save(memberSignUpRequestDto.toMember());
         member.setTeam(manager.getTeam());
         member.setTeam_name(manager.getTeam_name());
+        member.setTeam_address(manager.getTeam_address());
         member.encodePassword(passwordEncoder);
 
         return member.getId();

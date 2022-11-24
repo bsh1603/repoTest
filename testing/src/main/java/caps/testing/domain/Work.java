@@ -1,5 +1,6 @@
 package caps.testing.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -22,18 +23,19 @@ public class Work {
 
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
+    @JsonBackReference
     private Member member;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd-HH-mm", timezone = "Asia/Seoul")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH-mm", timezone = "Asia/Seoul")
 //    @DateTimeFormat(pattern = "yyyy-MM-DD-HH-mm")
     @Column(name = "WORK_START_TIME", updatable = false)
     private Timestamp work_start_time;
 
-    @DateTimeFormat(pattern = "yyyy-MM-DD-HH-mm")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH-mm", timezone = "Asia/Seoul")
     @Column(name = "WORK_END_TIME", updatable = false)
     private Timestamp work_end_time;
 
-    @DateTimeFormat(pattern = "yyyy-MM-DD-HH-mm")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'-HH-mm", timezone = "Asia/Seoul")
     @Column(name = "WORK_TIME", updatable = false)
     private Timestamp work_time;
 
