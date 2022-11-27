@@ -64,4 +64,16 @@ public class MemberController {
         return members;
     }
 
+    @GetMapping("api/member/my/{member_id}")
+    public Member getAllMemberInfo(@PathVariable("member_id") Long member_id){
+        Member myInfo = memberService.findMyInfo(member_id);
+        return myInfo;
+    }
+
+    @GetMapping("api/member/myteam/{member_id}")
+    public Long getMyTeamId(@PathVariable("member_id") Long member_id){
+        Long myTeamId = memberService.findMyTeamId(member_id);
+        return myTeamId;
+    }
+
 }

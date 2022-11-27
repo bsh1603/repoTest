@@ -16,6 +16,9 @@ public interface MemberRepository extends JpaRepository<Member, Long>{
 
     Optional<Member> findByEmail(String email);
 
+    @Query(value = "select * from member m where m.member_id = ?1", nativeQuery = true)
+    Member findMemberById(Long id);
+
     @Query(value = "select * from member m where m.authentication_code = ?1", nativeQuery = true)
     List<Member> findAllByCodeLike(String authentication_code);
 

@@ -64,11 +64,6 @@ public class Member implements UserDetails {
     @Column(name = "TEAM_ADDRESS")
     private String team_address;
 
-//    @ManyToOne
-//    @JoinColumn(name = "ROOM_ID")
-//    @JsonBackReference
-//    private Room room;
-
     @OneToMany(mappedBy = "member")
     @JsonManagedReference
     private List<Work> works = new ArrayList<>();

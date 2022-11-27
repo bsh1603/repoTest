@@ -128,6 +128,12 @@ public class MemberService {
         return member;
     }
 
+    @Transactional
+    public Member findMyInfo(Long id){
+        Member myInfo = memberRepository.findMemberById(id);
+        return myInfo;
+    }
+
     public Long findMyId(Member member){
         return member.getId();
     }
