@@ -31,4 +31,10 @@ public interface MemberRepository extends JpaRepository<Member, Long>{
     @Modifying
     @Query(value = "UPDATE member m set m.member_name = :name, m.member_email = :email where m.member_id = :id", nativeQuery = true)
     void updateMember(@Param("name") String name, @Param("email") String email, @Param("id") Long id);
+
+    @Query(value = "select t.team_latitude from team t where t.team_id = ?1", nativeQuery = true)
+    Double findTeamLatitude(Long team_id);
+
+    @Query(value = "select t.team_longitude from team t where t.team_id = ?1", nativeQuery = true)
+    Double findTeamLongitude(Long team_id);
 }

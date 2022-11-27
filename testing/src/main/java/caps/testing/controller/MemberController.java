@@ -9,6 +9,7 @@ import caps.testing.repository.MemberRepository;
 import caps.testing.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.http.MediaType;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +17,7 @@ import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,32 +26,30 @@ public class MemberController {
     private final MemberService memberService;
     private final MemberRepository memberRepository;
 
-//    @PostMapping("/api/users")
-//    public Member member(){
-//        System.out.println("UserApiController 진입 성공");
-//
-//        Member member = new Member(1L, "테스트", "email@email.com", "pwd",  Administration.ROLE_WORKER, "01010101" ,"auth코드", "팀이름");
-//        return member;
-//    }
-
-    @PostMapping("/api/signup/worker")
+    @PostMapping(value = "/api/signup/worker", consumes = MediaType.APPLICATION_JSON_VALUE)
     public Long signUp_worker(@RequestBody @Valid MemberSignUpRequestDto memberSignUpRequestDto){
         return memberService.join_worker(memberSignUpRequestDto);
     }
 
-    @PostMapping("/api/signup/manager")
-    public Long singUp_manger(@RequestBody @Valid ManagerSignUpDto managerSignUpDto) throws Exception {
+    @PostMapping(value = "/api/signup/manager", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Long singUp_manger(@RequestBody ManagerSignUpDto managerSignUpDto) throws Exception {
         return memberService.join_manager(managerSignUpDto);
     }
 
-    @PostMapping("/api/login")
-    public Map<String, Member> login(@RequestBody @Valid MemberSignInRequestDto requestDto) {
-        String token = memberService.login(requestDto);
+    @PostMapping(value = "/api/login", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Member login(@RequestBody @Valid MemberSignInRequestDto requestDto) {
+//        String token = memberService.login(requestDto);
         Member member = memberService.login2(requestDto);
-        Map<String, Member> map = new HashMap<>();
-        map.put(token, member);
-        return map;
+//        Map<String, Member> map = new HashMap<>();
+//        map.put(token, member);
+        return member;
     }
+
+//    @GetMapping(value = "/api/success", consumes = MediaType.APPLICATION_JSON_VALUE)
+//    public Member loginSuccess(@RequestBody @Valid MemberSignInRequestDto requestDto){
+//        Optional<Member> member = memberRepository.findByEmail(requestDto.getEmail());
+//        return member.get();
+//    }
 
     @GetMapping("/members")
     public List<Member> list(Model model){

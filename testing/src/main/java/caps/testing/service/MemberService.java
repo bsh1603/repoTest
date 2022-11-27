@@ -16,6 +16,7 @@ import net.minidev.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.json.JsonParser;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,13 +32,14 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import static java.util.List.of;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Slf4j
 public class MemberService {
 
-    @Autowired
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
@@ -84,10 +86,16 @@ public class MemberService {
         Team registered = teamService.register(setTeam);
 
         Member member = memberRepository.save(managerSignUpDto.toManager());
+
         member.setTeam(registered);
         member.encodePassword(passwordEncoder);
         member.encodeAuthentication(passwordEncoder);
         return member.getId();
+    }
+
+    public Member register(Member member){
+        Member setMember = memberRepository.save(member);
+        return setMember;
     }
 
     @Transactional
@@ -166,8 +174,11 @@ public class MemberService {
     // url api 생성
     private static String makeUrl(String address) throws UnsupportedEncodingException {
 
-        List<String> listKey = List.of("service", "request", "crs", "address", "format", "type", "key");
-        List<String> listVal = List.of("address", "getcoord", "epsg:4326", address, "json", "road", "4ED1B9F5-6695-304D-A340-88024AE1D96C");
+        List<String> listKey = new ArrayList<>();
+        List<String> listVal = new ArrayList<>();
+
+        listKey = List.of("service", "request", "crs", "address", "format", "type", "key");
+        listVal = List.of("address", "getcoord", "epsg:4326", address, "json", "road", "4ED1B9F5-6695-304D-A340-88024AE1D96C");
 
         String baseUrl = "http://api.vworld.kr/req/address?";
         String tmp = "";
@@ -186,7 +197,7 @@ public class MemberService {
     }
 
     // api를 기반으로 위도, 경도 찾기
-    public static List<Double> fetchData(String input) throws Exception{
+    private static List<Double> fetchData(String input) throws Exception{
         URL url = new URL(input);
         URLConnection connection = url.openConnection();
         StringBuilder sb = new StringBuilder();
@@ -216,7 +227,7 @@ public class MemberService {
             double latitude = Double.valueOf(x1).doubleValue();
             double longitude = Double.valueOf(y1).doubleValue();
 
-            List<Double> location = List.of(latitude, longitude);
+            List<Double> location = of(latitude, longitude);
             return location;
         }
     }

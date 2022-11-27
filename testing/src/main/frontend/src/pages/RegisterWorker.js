@@ -2,9 +2,11 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import styled from "styled-components";
 import useInput from "../hooks/useInput";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const RegisterWorker = () => {
+  const navigate = useNavigate();
   const validatePhone = (phone) =>
     /010-\d{3,4}-\d{4}/.test(phone) ? true : false;
 
@@ -32,15 +34,15 @@ const RegisterWorker = () => {
 
   const handleRegister = () => {
     const userData = {
-      member_email: email,
-      member_name: name,
-      member_pwd: pwd,
-      member_phone: phone,
+      email: email,
+      name: name,
+      pwd: pwd,
+      phone: phone,
       authentication_code: code,
     };
 
     axios
-      .post("/api/signup/manager", userData)
+      .post("/api/signup/worker", userData)
       .then(function (response) {
         // 응답 처리하기
         console.log(response);
@@ -137,7 +139,7 @@ const RegisterWorker = () => {
           variant="contained"
           fullWidth={true}
           size="large"
-          onClick={handleRegister}
+          onClick={handleRegister, () => navigate("/login")}
         >
           회원가입
         </Button>

@@ -4,23 +4,29 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import useInput from "../hooks/useInput";
 import axios from "axios";
+import {useAtom} from 'jotai'
+import { loginInfo } from '../App.js'
 
 const Login = () => {
+  const [user, setUser] = useAtom(loginInfo);
   const navigate = useNavigate();
   const [email, emailChange, setEmail] = useInput("");
   const [pwd, pwdChange, setPwd] = useInput("");
 
   const handleLogin = () => {
-    const loginData = { member_email: email, member_pwd: pwd };
+    const loginData = { email: email, pwd: pwd };
 
     axios
       .post("/api/login", loginData)
       .then(function (response) {
         // 응답 처리하기
         console.log(response);
+        setUser(response.data);
+        sessionStorage.setItem("user", JSON.stringify(response.data));
         setEmail("");
         setPwd("");
       })
+      .then(() => {navigate("/main")})
       .catch(function (error) {
         console.log(error);
       });

@@ -4,6 +4,7 @@ import caps.testing.domain.Work;
 import caps.testing.dto.work.WorkEndDto;
 import caps.testing.dto.work.WorkStartDto;
 import caps.testing.repository.WorkRepository;
+import caps.testing.service.TeamService;
 import caps.testing.service.WorkService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -20,10 +21,16 @@ public class WorkController {
 
     private final WorkRepository workRepository;
     private final WorkService workService;
+    private final TeamService teamService;
 
     @PostMapping("/api/work/start/{member_id}")
     public Long register_start_time(@RequestBody @Valid WorkStartDto workStartDto, @PathVariable @Valid Long member_id){
         return workService.save_startTime(workStartDto, member_id);
+    }
+
+    @GetMapping("/api/work/start/location/{team_id}")
+    public Map<String, Double> get_location(@PathVariable @Valid Long team_id){
+        return teamService.findLocation(team_id);
     }
 
     @PostMapping("/api/work/end/{member_id}")

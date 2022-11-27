@@ -2,9 +2,11 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import styled from "styled-components";
 import useInput from "../hooks/useInput";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const RegisterManager = () => {
+  const navigate = useNavigate();
   const validatePhone = (phone) =>
     /010-\d{3,4}-\d{4}/.test(phone) ? true : false;
 
@@ -34,10 +36,10 @@ const RegisterManager = () => {
 
   const handleRegister = () => {
     const userData = {
-      member_email: email,
-      member_name: name,
-      member_pwd: pwd,
-      member_phone: phone,
+      email: email,
+      name: name,
+      pwd: pwd,
+      phone: phone,
       authentication_code: code,
       team_name: teamName,
       team_address: teamAddress,
@@ -164,7 +166,7 @@ const RegisterManager = () => {
           variant="contained"
           fullWidth={true}
           size="large"
-          onClick={handleRegister}
+          onClick={handleRegister, () => navigate("/login")}
         >
           회원가입
         </Button>
