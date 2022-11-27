@@ -4,14 +4,14 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import useInput from "../hooks/useInput";
 import axios from "axios";
-import {useAtom} from 'jotai'
-import { loginInfo } from '../App.js'
+import { useSetRecoilState } from "recoil";
+import { userState } from "../recoil/atom";
 
 const Login = () => {
-  const [user, setUser] = useAtom(loginInfo);
   const navigate = useNavigate();
   const [email, emailChange, setEmail] = useInput("");
   const [pwd, pwdChange, setPwd] = useInput("");
+  const setUser = useSetRecoilState(userState);
 
   const handleLogin = () => {
     const loginData = { email: email, pwd: pwd };
@@ -20,13 +20,18 @@ const Login = () => {
       .post("/api/login", loginData)
       .then(function (response) {
         // 응답 처리하기
-        console.log(response);
-        setUser(response.data);
-        sessionStorage.setItem("user", JSON.stringify(response.data));
+        const user = {
+          id: response.data.id,
+          name: response.data.name,
+          admin: response.data.admin,
+        };
+        setUser(user);
         setEmail("");
         setPwd("");
+        localStorage.setItem("user", JSON.stringify(user));
+        console.log(user)
+        navigate("/");
       })
-      .then(() => {navigate("/main")})
       .catch(function (error) {
         console.log(error);
       });

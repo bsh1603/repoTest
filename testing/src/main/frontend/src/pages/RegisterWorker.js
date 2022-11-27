@@ -2,8 +2,8 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import styled from "styled-components";
 import useInput from "../hooks/useInput";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const RegisterWorker = () => {
   const navigate = useNavigate();
@@ -51,6 +51,7 @@ const RegisterWorker = () => {
         setPwd("");
         setPhone("");
         setCode("");
+        alert("회원 가입 성공");
       })
       .catch(function (error) {
         console.log(error);
@@ -139,7 +140,10 @@ const RegisterWorker = () => {
           variant="contained"
           fullWidth={true}
           size="large"
-          onClick={handleRegister, () => navigate("/login")}
+          onClick={() => {
+              handleRegister();
+              navigate("/login");
+          }}
         >
           회원가입
         </Button>

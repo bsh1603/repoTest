@@ -2,8 +2,8 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import styled from "styled-components";
 import useInput from "../hooks/useInput";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const RegisterManager = () => {
   const navigate = useNavigate();
@@ -34,6 +34,7 @@ const RegisterManager = () => {
   const [teamName, teamNameChange, setTeamName] = useInput("");
   const [teamAddress, teamAddressChange, setTeamAddress] = useInput("");
 
+  const navData = {label: "프로필 수정", navigate: "profile"};
   const handleRegister = () => {
     const userData = {
       email: email,
@@ -57,6 +58,7 @@ const RegisterManager = () => {
         setCode("");
         setTeamName("");
         setTeamAddress("");
+        alert("회원 가입 성공");
       })
       .catch(function (error) {
         console.log(error);
@@ -166,7 +168,10 @@ const RegisterManager = () => {
           variant="contained"
           fullWidth={true}
           size="large"
-          onClick={handleRegister, () => navigate("/login")}
+          onClick={() => {
+            handleRegister();
+            navigate("/login");
+            }}
         >
           회원가입
         </Button>

@@ -94,7 +94,7 @@ const NavBar = () => {
             <ListItem
               component="div"
               disablePadding
-              onClick={() => navigate("/main")}
+              onClick={() => navigate("/")}
             >
               <ListItemButton sx={{ height: 56 }}>
                 <ListItemIcon>
