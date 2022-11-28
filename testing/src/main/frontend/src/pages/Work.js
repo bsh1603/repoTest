@@ -5,30 +5,38 @@ import Header from "../components/Header";
 import { useEffect } from "react";
 import axios from "axios";
 import { useRecoilValue, useRecoilState } from "recoil";
-import { memberState, userState } from "../recoil/atom";
+import { memberState, userState, workState, teamState, stockState } from "../recoil/atom";
+import moment from 'moment';
+import Table from "../components/WorkTable";
 
 const Work = () => {
   const user = useRecoilValue(userState);
-  const [member, setMember] = useRecoilState(memberState);
-  const workUser = localStorage.getItem("user");
+  const [work, setWork] = useRecoilState(workState);
+  const [team, setTeam] = useRecoilState(teamState);
 
     useEffect(() => {
-      axios.get(`/api/member/my/${user.id}`).then((response) => {
-        setMember(response.data);
-        console.log(member);
+      axios.get(`/api/member/my/${JSON.parse(localStorage.getItem("user")).id}`).then((response) => {
+        setWork(response.data);
       });
     }, []);
+
+    useEffect(() => {
+      axios.get(`api/member/myteam/${JSON.parse(localStorage.getItem("user")).id}`).then((response) => {
+        setTeam(response.data);
+      });
+    }, []);
+
+    console.log("팀아이디 확인");
+    console.log(team);
 
   return (
     <>
       <NavBar />
       <div>근무 조회 페이지</div>
-
+      <h1>근무테스트</h1>
       <div>
         <InputWrapper>
-            <h1>{member.id}</h1>
-            <h1>{member.team_name}</h1>
-            <h1>팀아이디</h1>
+            <Table rows={work.works} />
         </InputWrapper>
       </div>
     </>

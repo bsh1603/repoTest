@@ -14,7 +14,17 @@ export const memberState = atom({
   default: [],
 });
 
+export const workState = atom({
+  key: "workState",
+  default: [],
+});
+
 export const teamState = atom({
   key: "teamState", // 변수명
   default: [],
 });
+
+export const stockState = atom({
+  key: "stockState",
+  default: [],
+})

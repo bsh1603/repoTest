@@ -10,6 +10,8 @@ import RegisterManager from "./pages/RegisterManager";
 import RegisterWorker from "./pages/RegisterWorker";
 import Stock from "./pages/Stock";
 import Work from "./pages/Work";
+import GraphTest from "./pages/GraphTest";
+import Graph from "./pages/Graph";
 
 function App() {
   return (
@@ -23,6 +25,8 @@ function App() {
       <Route path="/stock" element={<Stock />} />
       <Route path="/chatsetting" element={<ChatSetting />} />
       <Route path="/profile" element={<Profile />} />
+      <Route path="/graphtest" element ={<GraphTest />} />
+      <Route path="/graph" element ={<Graph />} />
     </Routes>
   );
 }

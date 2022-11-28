@@ -7,12 +7,14 @@ import axios from "axios";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { memberState, userState } from "../recoil/atom";
 import Table from "../components/Table";
+
 const Member = () => {
   const user = useRecoilValue(userState);
   const [member, setMember] = useRecoilState(memberState);
+  const memberUser = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
-    axios.get(`/api/member/${user.id}`).then((response) => {
+    axios.get(`/api/member/${memberUser.id}`).then((response) => {
       setMember(response.data);
       console.log(member);
     });
@@ -24,10 +26,12 @@ const Member = () => {
       <NavWrapper>
         <NavBar />
       </NavWrapper>
+      <InputWrapper>
       <Table rows={member} />
       <Button variant="contained" fullWidth={true} size="small">
         팀원 정보 삭제
       </Button>
+      </InputWrapper>
     </>
   );
 };
@@ -37,7 +41,7 @@ export default Member;
 const InputWrapper = styled.div`
   max-width: 1000px;
   text-align: center;
-  margin: 30px auto;
+  margin: 0px auto;
 `;
 
 const NavWrapper = styled.div`

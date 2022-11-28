@@ -14,9 +14,9 @@ export default function BasicTable({ rows }) {
         <TableHead>
           <TableRow>
             <TableCell>이름</TableCell>
-            <TableCell align="right">이메일</TableCell>
-            <TableCell align="right">전화번호</TableCell>
-            <TableCell align="right">직책</TableCell>
+            <TableCell align="center">이메일</TableCell>
+            <TableCell align="center">전화번호</TableCell>
+            <TableCell align="center">직책</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -28,9 +28,9 @@ export default function BasicTable({ rows }) {
               <TableCell component="th" scope="row">
                 {row.name}
               </TableCell>
-              <TableCell align="right">{row.email}</TableCell>
-              <TableCell align="right">{row.phone}</TableCell>
-              <TableCell align="right">{row.admin}</TableCell>
+              <TableCell align="center">{row.email}</TableCell>
+              <TableCell align="center">{row.phone}</TableCell>
+              <TableCell align="center">{row.admin}</TableCell>
             </TableRow>
           ))}
         </TableBody>
