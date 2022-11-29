@@ -9,25 +9,33 @@ import { memberState, userState, workState, teamState, stockState } from "../rec
 import moment from 'moment';
 import Table from "../components/WorkTable";
 
+
+
+
 const Work = () => {
   const user = useRecoilValue(userState);
   const [work, setWork] = useRecoilState(workState);
   const [team, setTeam] = useRecoilState(teamState);
 
     useEffect(() => {
-      axios.get(`/api/member/my/${JSON.parse(localStorage.getItem("user")).id}`).then((response) => {
-        setWork(response.data);
+      axios.get(`/api/member/my/${user.id}`)
+        .then((response) => {
+          setWork(response.data.works);
+          
+        
+          // console.log('in callback',response.data.works)
       });
+      
     }, []);
 
-    useEffect(() => {
-      axios.get(`api/member/myteam/${JSON.parse(localStorage.getItem("user")).id}`).then((response) => {
-        setTeam(response.data);
-      });
-    }, []);
+//    useEffect(() => {
+//      axios.get(`api/member/myteam/${JSON.parse(localStorage.getItem("user")).id}`).then((response) => {
+//        setTeam(response.data);
+//      });
+//    }, []);
 
-    console.log("팀아이디 확인");
-    console.log(team);
+//    console.log("팀아이디 확인");
+//    console.log(team);
 
   return (
     <>
@@ -36,7 +44,7 @@ const Work = () => {
       <h1>근무테스트</h1>
       <div>
         <InputWrapper>
-            <Table rows={work.works} />
+            <Table rows={work} />
         </InputWrapper>
       </div>
     </>

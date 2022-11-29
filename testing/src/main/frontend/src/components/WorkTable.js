@@ -19,9 +19,10 @@ export default function BasicTable({ rows }) {
   const [work, setWork] = useRecoilState(workState);
 
     useEffect(() => {
-      axios.get(`/api/member/my/${JSON.parse(localStorage.getItem("user")).id}`).then((response) => {
-        setWork(response.data);
-      });
+//      axios.get(`/api/member/my/${JSON.parse(localStorage.getItem("user")).id}`).then((response) => {
+//        setWork(response.data);
+//      });
+    console.log('recoil word',work)
     }, []);
 
   function getStart(work_start_time){
@@ -45,17 +46,19 @@ export default function BasicTable({ rows }) {
   }
 
   function getHours(work_time){
-    var hours = moment(work_time).utc().subtract(9, "hours").format("HH");
+//    var hours = moment(work_time).utc().subtract(9, "hours").format("HH");
+    var hours = work_time / 60;
     return hours;
   }
 
   function getMinutes(work_time){
-      var minutes = moment(work_time).utc().subtract(9, "hours").format("mm");
-      return minutes;
+//      var minutes = moment(work_time).utc().subtract(9, "hours").format("mm");
+    var minutes = work_time % 60;
+    return minutes;
   }
 
-  console.log("work 사이즈 알아보기");
-  console.log(Object.keys(work.works).length);
+//  console.log("work 사이즈 알아보기");
+//  console.log(Object.keys(work.works).length);
 
   return (
     <TableContainer component={Paper}>
@@ -70,13 +73,13 @@ export default function BasicTable({ rows }) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {rows.map((row,idx) => (
               <TableRow
               key={row.id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
               <TableCell component="th" scope="row" align="center">
-                {row.id}
+                {idx+1}
               </TableCell>
               <TableCell align="center">{getYearMonth(row.work_start_time)}</TableCell>
               <TableCell align="center">{getStart(row.work_start_time)}</TableCell>

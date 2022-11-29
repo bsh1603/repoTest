@@ -50,10 +50,20 @@ public class WorkController {
         Optional<Work> workAll = workRepository.findById(member_id);
         List<Work> myWorkList = new ArrayList<>();
         Work work = workAll.get();
-//        Map<String, Timestamp> map = new HashMap<>();
-//        map.put("일 시작 시간", work.getWork_start_time());
-//        map.put("일 종료 시간", work.getWork_end_time());
 
         return work;
+    }
+
+    @GetMapping("/api/work/chart/{member_id}")
+    public Map<String, Long> get_work_data(@PathVariable @Valid Long member_id){
+        List<String> workDateForChart = workRepository.findWorkDateForChart(member_id);
+        List<Long> workTimeForChart = workRepository.findWorkTimeForChart(member_id);
+        Map<String, Long> map = new LinkedHashMap<>();
+
+        for (int i = 0; i < workDateForChart.size(); i++) {
+            map.put(workDateForChart.get(i), workTimeForChart.get(i));
+        }
+
+        return map;
     }
 }

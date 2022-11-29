@@ -6,23 +6,21 @@ import lombok.*;
 import java.sql.Timestamp;
 
 @Data
-@Getter
-@Setter
+@AllArgsConstructor
 @NoArgsConstructor
-public class StockRegisterDto {
+@Builder
+public class StockUpdateDto {
+
     private Timestamp date;
-    private String name;
     private int price;
     private int quantity;
 
-    @Builder
-    public Stock toStock() {
+    public Stock toUpdate() {
         return Stock.builder()
-                .name(name)
+                .date(date)
                 .price(price)
                 .quantity(quantity)
-                .date(date)
                 .build();
     }
-
 }
+

@@ -16,10 +16,10 @@ const Member = () => {
   useEffect(() => {
     axios.get(`/api/member/${memberUser.id}`).then((response) => {
       setMember(response.data);
-      console.log(member);
     });
   }, []);
 
+  console.log(member);
   return (
     <>
       <Header />

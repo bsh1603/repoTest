@@ -26,8 +26,10 @@ public class Work {
     @JsonBackReference
     private Member member;
 
+    @Column(name = "WORK_DATE", updatable = false)
+    private String work_date;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH-mm", timezone = "Asia/Seoul")
-//    @DateTimeFormat(pattern = "yyyy-MM-DD-HH-mm")
     @Column(name = "WORK_START_TIME", updatable = false)
     private Timestamp work_start_time;
 
@@ -35,14 +37,14 @@ public class Work {
     @Column(name = "WORK_END_TIME", updatable = false)
     private Timestamp work_end_time;
 
-    @JsonFormat(pattern = "yyyy-MM-dd'T'-HH-mm", timezone = "Asia/Seoul")
     @Column(name = "WORK_TIME", updatable = false)
-    private Timestamp work_time;
+    private Long work_time;
 
     @Builder
-    public Work(Long id, Member member, Timestamp work_start_time, Timestamp work_end_time, Timestamp work_time) {
+    public Work(Long id, Member member, String work_date, Timestamp work_start_time, Timestamp work_end_time, Long work_time) {
         this.id = id;
         this.member = member;
+        this.work_date = work_date;
         this.work_start_time = work_start_time;
         this.work_end_time = work_end_time;
         this.work_time = work_time;

@@ -9,13 +9,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.security.Timestamp;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity(name = "stock")
 @NoArgsConstructor
 @Getter
 @Setter
 public class Stock {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "STOCK_ID")
@@ -49,4 +52,23 @@ public class Stock {
         this.quantity = quantity;
     }
 }
+
+//    //재고 수량 증가
+//    public int increaseStockQuantity(int stockQuantity) {
+//        return this.stockQuantity += stockQuantity;
+//    }
+//
+//    //재고 수량 감소
+//    public void decreaseStockQuantity(int quantity) {
+//        int restStock = this.stockQuantity - quantity;
+//        this.stockQuantity = restStock;
+//    }
+//
+//    //재고 물품 수정
+//    private void changeStock(String stockItem, int stockPrice, int stockQuantity) {
+//        this.stockItem = stockItem;
+//        this.stockPrice = stockPrice;
+//        this.stockQuantity = stockQuantity;
+//    }
+
 

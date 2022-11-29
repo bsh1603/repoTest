@@ -13,7 +13,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -30,6 +33,11 @@ public class WorkService {
         Work startWork = workRepository.save(workStartDto.toStartWork());
         Optional<Member> findMember = memberRepository.findById(id);
         startWork.setMember(findMember.get());
+
+        Long workId = startWork.getId();
+
+        workRepository.findWorkDate(workId);
+
         return startWork.getId();
     }
 
@@ -45,8 +53,7 @@ public class WorkService {
     }
 
     @Transactional
-    public void calculate_work_time(){
+    public void calculate_work_time() {
         workRepository.today_work_time();
     }
-
 }

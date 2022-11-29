@@ -3,20 +3,16 @@ package caps.testing.service;
 import caps.testing.domain.Member;
 import caps.testing.domain.Team;
 import caps.testing.dto.member.ManagerSignUpDto;
+import caps.testing.dto.member.MemberModifyDto;
 import caps.testing.dto.member.MemberSignInRequestDto;
 import caps.testing.dto.member.MemberSignUpRequestDto;
-import caps.testing.dto.token.TokenResponseDto;
 import caps.testing.exception.MemberException;
 import caps.testing.exception.MemberExceptionType;
 import caps.testing.jwt.JwtTokenProvider;
 import caps.testing.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.minidev.json.JSONArray;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.json.JsonParser;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,7 +26,6 @@ import java.util.*;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import static java.util.List.of;
 
@@ -236,5 +231,17 @@ public class MemberService {
             List<Double> location = of(latitude, longitude);
             return location;
         }
+    }
+
+    @Transactional
+    public void modifyMember(MemberModifyDto modifyRequestDto, Long id) {
+        String rawPwd = modifyRequestDto.getPwd();
+        String encodePwd = passwordEncoder.encode(rawPwd);
+        memberRepository.updateMember(modifyRequestDto.getName(), modifyRequestDto.getEmail(), modifyRequestDto.getPhone(), encodePwd, id);
+    }
+
+    @Transactional
+    public void deleteMember(Long id) {
+        memberRepository.deleteMember(id);
     }
 }
